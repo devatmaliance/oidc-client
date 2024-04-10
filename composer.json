@@ -1,0 +1,51 @@
+{
+  "name": "atmaliance/oidc_client",
+  "description": "Package",
+  "type": "yii2-extension",
+  "keywords": [
+    "yii2",
+    "extension",
+    "atm72",
+    "keycloak",
+    "auth"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vitaliy Popov",
+      "email": "popov.v.o@atm72.ru",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "yiisoft/yii2": "2.*",
+    "yiisoft/yii2-authclient": "^2.2",
+    "web-token/jwt-signature": "^2.2",
+    "web-token/jwt-checker": "^2.2",
+    "web-token/jwt-signature-algorithm-rsa": "^2.2",
+    "web-token/jwt-signature-algorithm-ecdsa": "^2.2",
+    "web-token/jwt-core": "^2.2",
+    "web-token/jwt-signature-algorithm-hmac": "^2.2",
+    "web-token/jwt-key-mgmt": "^2.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "atmaliance\\oidc_client\\": "src"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
+}
