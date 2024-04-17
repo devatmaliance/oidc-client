@@ -1,5 +1,5 @@
 {
-  "name": "atmaliance/oidc_client",
+  "name": "atmaliance/oidc-client",
   "description": "Package",
   "type": "yii2-extension",
   "keywords": [
@@ -12,8 +12,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Vitaliy Popov",
-      "email": "popov.v.o@atm72.ru",
+      "name": "Koposov Vyacheslav",
+      "email": "koposov.v.y@atm72.ru",
       "role": "Developer"
     }
   ],
@@ -21,6 +21,8 @@
     "php": ">=7.4",
     "yiisoft/yii2": "2.*",
     "yiisoft/yii2-authclient": "^2.2",
+    "atmaliance/yii2-atm-keycloak-entity": "^0.5.0",
+    "sizeg/yii2-jwt": "^2.0",
     "web-token/jwt-signature": "^2.2",
     "web-token/jwt-checker": "^2.2",
     "web-token/jwt-signature-algorithm-rsa": "^2.2",

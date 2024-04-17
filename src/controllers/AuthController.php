@@ -2,20 +2,41 @@
 
 declare(strict_types=1);
 
-namespace atmaliance\yii2_keycloak\controllers;
+namespace atmaliance\oidc_client\controllers;
 
+use atmaliance\oidc_client\interfaces\UserManagementInterface;
+use atmaliance\oidc_client\models\CookieBearerAuth;
+use atmaliance\oidc_client\models\dto\UserEntityDTO;
 use Yii;
 use yii\authclient\AuthAction;
+use yii\authclient\OAuthToken;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use atmaliance\oidc_client\models\KeycloakClient;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use function Symfony\Component\Translation\t;
 
 class AuthController extends Controller
 {
+    private UserManagementInterface $userManagement;
+    private string $clientCollection;
+
+    /**
+     * UserManagementInterface DI components. Path: config/main.php -> container[singleton] = class
+     */
+    public function __construct($id, $module, UserManagementInterface $userManagement, $config = [])
+    {
+        $this->clientCollection = 'authClientCollection';
+        $this->userManagement = $userManagement;
+        parent::__construct($id, $module, $config);
+    }
+
     public function actions(): array
     {
         return [
-            'auth' => [
+            'index' => [
                 'class' => AuthAction::class,
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],
@@ -33,13 +54,41 @@ class AuthController extends Controller
                         'roles' => ['?'],
                     ],
                 ],
-            ],
+            ]
         ];
+    }
+
+    public function actionLogout(string $authclient): Response
+    {
+        $collection = Yii::$app->get($this->clientCollection);
+        if (!$collection->hasClient($authclient)) {
+            throw new NotFoundHttpException("Unknown auth client '{$authclient}'");
+        }
+        $client = $collection->getClient($authclient);
+
+        $storage = $client->getStateStorage();
+        $accessToken = $storage->get(CookieBearerAuth::ACCESS_TOKEN_COOKIE);
+        if (!$accessToken) {
+            throw new Exception('Not found access token');
+        }
+
+        $userEntityDTO = $client->getUserEntityDTO($accessToken);
+        $storage->remove(CookieBearerAuth::REFRESH_TOKEN_COOKIE);
+        $storage->remove(CookieBearerAuth::ACCESS_TOKEN_COOKIE);
+
+        $this->userManagement->logout($userEntityDTO->sub);
+        Yii::$app->user->logout();
+        return $this->goHome();
     }
 
     public function onAuthSuccess(KeycloakClient $client)
     {
         $attributes = $client->getUserAttributes();
-        dd($attributes);
+        $userEntityDTO = new UserEntityDTO($attributes);
+
+        $client->setAccessToken($client->getAccessToken());
+
+        $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
+        Yii::$app->user->login($identity);
     }
 }
