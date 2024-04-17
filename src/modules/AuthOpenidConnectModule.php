@@ -8,5 +8,5 @@ use yii\base\Module;
 
 class AuthOpenidConnectModule extends Module
 {
-    public string $controllerNamespace = 'atmaliance\oidc_client\controllers';
+    public ?string $controllerNamespace = 'atmaliance\oidc_client\controllers';
 }
