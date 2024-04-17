@@ -21,7 +21,7 @@
     "php": ">=7.4",
     "yiisoft/yii2": "2.*",
     "yiisoft/yii2-authclient": "^2.2",
-    "atmaliance/yii2-atm-keycloak-entity": "^0.5.0",
+    "atmaliance/yii2-atm-keycloak-entity": "^0.6.0",
     "sizeg/yii2-jwt": "^2.0",
     "web-token/jwt-signature": "^2.2",
     "web-token/jwt-checker": "^2.2",
