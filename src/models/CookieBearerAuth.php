@@ -58,7 +58,13 @@ class CookieBearerAuth extends AuthMethod
             $oauthTokenForRefresh = new OAuthToken;
             $oauthTokenForRefresh->setParam('refresh_token', $refreshToken);
 
-            $oauthToken = $client->refreshAccessToken($oauthTokenForRefresh);
+            try {
+                $oauthToken = $client->refreshAccessToken($oauthTokenForRefresh);
+            } catch (\Throwable $e) {
+                Yii::$app->user->logout();
+                return null;
+            }
+
             $accessToken = $oauthToken->token;
             return $user->loginByAccessToken($accessToken, get_class($this));
         }
