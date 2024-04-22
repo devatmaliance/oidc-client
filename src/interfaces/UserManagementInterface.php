@@ -7,6 +7,7 @@ use yii\web\IdentityInterface;
 
 interface UserManagementInterface
 {
+    public function beforeLogin(UserEntityDTO $entityDTO): bool;
     public function findUserByAttributes(UserEntityDTO $entityDTO): IdentityInterface;
     public function logout(string $uuid): void;
 }
