@@ -88,7 +88,7 @@ class AuthController extends Controller
 
         $client->setAccessToken($client->getAccessToken());
 
-        if ($this->userManagement->beforeLogin($attributes)) {
+        if ($this->userManagement->beforeLogin($userEntityDTO)) {
             $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
             Yii::$app->user->login($identity);
         }
