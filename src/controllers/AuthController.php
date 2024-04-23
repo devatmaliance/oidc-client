@@ -84,11 +84,11 @@ class AuthController extends Controller
     public function onAuthSuccess(KeycloakClient $client)
     {
         $attributes = $client->getUserAttributes();
-        $userEntityDTO = new UserEntityDTO($attributes);
-
-        $client->setAccessToken($client->getAccessToken());
+        $userEntityDTO = new UserEntityDTO();
+        $userEntityDTO->load($attributes, '');
 
         if ($this->userManagement->beforeLogin($userEntityDTO)) {
+            $client->setAccessToken($client->getAccessToken());
             $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
             Yii::$app->user->login($identity);
         }
