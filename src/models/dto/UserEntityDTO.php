@@ -16,11 +16,13 @@ class UserEntityDTO extends Model
     public string $middle_name = '';
     public string $family_name = '';
     public string $email = '';
+    public string $phone_number = '';
 
     public function rules(): array
     {
         return [
             [[
+                'phone_number',
                 'sub',
                 'email_verified',
                 'name',
