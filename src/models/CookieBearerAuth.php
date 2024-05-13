@@ -54,7 +54,7 @@ class CookieBearerAuth extends AuthMethod
         $client = Yii::$app->authClientCollection->getClient(KeycloakClient::NAME);
         $isExpiredAccessToken = $client->isExpiredToken($accessToken);
 
-        if ($isExpiredAccessToken && !$client->isExpiredToken($refreshToken)) {
+        if ($isExpiredAccessToken) {
             $oauthTokenForRefresh = new OAuthToken;
             $oauthTokenForRefresh->setParam('refresh_token', $refreshToken);
 
