@@ -32,10 +32,13 @@ class KeycloakClient extends OpenIdConnect
         return sprintf("%s-%s-", self::NAME, 'prefix');
     }
 
-    public function isExpiredToken(string $accessToken): bool
+    public function isExpiredToken(string $token): bool
     {
-        $accessTokenObj = (new Jwt())->getParser()->parse($accessToken);
-        return $accessTokenObj->isExpired();
+        $jwsData = $this->loadJws($token);
+        $this->validateClaims($jwsData);
+        $tokenExp = $jwsData['exp'] ?? null; // Время истечения токена
+        $currentTime = time();
+        return $tokenExp < $currentTime;
     }
 
     /**
