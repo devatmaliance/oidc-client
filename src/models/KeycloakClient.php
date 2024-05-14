@@ -35,7 +35,6 @@ class KeycloakClient extends OpenIdConnect
     public function isExpiredToken(string $token): bool
     {
         $jwsData = $this->loadJws($token);
-        $this->validateClaims($jwsData);
         $tokenExp = $jwsData['exp'] ?? null; // Время истечения токена
         $currentTime = time();
         return $tokenExp < $currentTime;
