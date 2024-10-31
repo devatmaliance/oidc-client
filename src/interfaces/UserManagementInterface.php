@@ -10,4 +10,5 @@ interface UserManagementInterface
     public function beforeLogin(UserEntityDTO $entityDTO): bool;
     public function findUserByAttributes(UserEntityDTO $entityDTO): IdentityInterface;
     public function logout(string $uuid): void;
+    public function create(UserEntityDTO $userDTO): IdentityInterface;
 }

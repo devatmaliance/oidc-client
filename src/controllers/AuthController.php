@@ -7,6 +7,7 @@ namespace atmaliance\oidc_client\controllers;
 use atmaliance\oidc_client\interfaces\UserManagementInterface;
 use atmaliance\oidc_client\models\CookieBearerAuth;
 use atmaliance\oidc_client\models\dto\UserEntityDTO;
+use common\exceptions\ModelNotFoundException;
 use Yii;
 use yii\authclient\AuthAction;
 use yii\authclient\OAuthToken;
@@ -89,7 +90,14 @@ class AuthController extends Controller
 
         if ($this->userManagement->beforeLogin($userEntityDTO)) {
             $client->setAccessToken($client->getAccessToken());
-            $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
+            try {
+                $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
+            } catch (ModelNotFoundException $e) {
+                $identity = $this->userManagement->create($userEntityDTO);
+            } catch (\Throwable $e) {
+                throw new $e;
+            }
+
             Yii::$app->user->login($identity);
         }
     }

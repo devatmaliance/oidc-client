@@ -3,9 +3,6 @@
 namespace atmaliance\oidc_client\models;
 
 use atmaliance\oidc_client\models\dto\UserEntityDTO;
-use common\models\Outbox;
-use DateTimeImmutable;
-use sizeg\jwt\Jwt;
 use yii\authclient\OAuthToken;
 use yii\authclient\OpenIdConnect;
 use yii\web\HttpException;
