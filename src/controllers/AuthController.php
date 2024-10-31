@@ -92,6 +92,7 @@ class AuthController extends Controller
             $client->setAccessToken($client->getAccessToken());
             try {
                 $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
+                $this->userManagement->update($identity);
             } catch (ModelNotFoundException $e) {
                 $identity = $this->userManagement->create($userEntityDTO);
             } catch (\Throwable $e) {

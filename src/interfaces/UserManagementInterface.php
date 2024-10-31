@@ -11,4 +11,5 @@ interface UserManagementInterface
     public function findUserByAttributes(UserEntityDTO $entityDTO): IdentityInterface;
     public function logout(string $uuid): void;
     public function create(UserEntityDTO $userDTO): IdentityInterface;
+    public function update(IdentityInterface $identity): void;
 }
