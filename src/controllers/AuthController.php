@@ -88,18 +88,10 @@ class AuthController extends Controller
         $userEntityDTO = new UserEntityDTO();
         $userEntityDTO->load($attributes, '');
 
-        if ($this->userManagement->beforeLogin($userEntityDTO)) {
+        $user = $this->userManagement->getIdentity($userEntityDTO);
+        if ($this->userManagement->beforeLogin($userEntityDTO, $user)) {
             $client->setAccessToken($client->getAccessToken());
-            try {
-                $identity = $this->userManagement->findUserByAttributes($userEntityDTO);
-                $this->userManagement->update($identity);
-            } catch (ModelNotFoundException $e) {
-                $identity = $this->userManagement->create($userEntityDTO);
-            } catch (\Throwable $e) {
-                throw new $e;
-            }
-
-            Yii::$app->user->login($identity);
+            Yii::$app->user->login($user);
         }
     }
 }
